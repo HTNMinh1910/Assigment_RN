@@ -2,11 +2,11 @@
   "store": [
     {
       "name": "Minh",
-      "address": "Ha Noi",
-      "phone": "0961803120",
-      "status": "Hang ngon",
-      "img": "https://www.dungplus.com/wp-content/uploads/2019/12/girl-xinh-1-480x600.jpg",
-      "id": 2
+      "address": "PT",
+      "phone": "09518616748",
+      "status": false,
+      "img": "file:///var/mobile/Containers/Data/Application/FBC029A1-EA4D-44C8-9636-73E1246EC3DA/Library/Caches/ExponentExperienceData/%2540anonymous%252FAssigment_RN-b8b023ef-84f2-4c16-9268-9349b4118d29/ImagePicker/311D14F6-4BFF-47FA-B53D-5D9DDCBE2EC0.png",
+      "id": 1
     }
   ]
 }

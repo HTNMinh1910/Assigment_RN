@@ -2,7 +2,7 @@ import { NavigationContainer} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Manager from './Manager';
 import PersonalInfo from './PersonalInfo';
-import Form from "./src/screens/Form/form";
+import Form from "./src/screens/form";
 import Home from './Home';
 
 const Stack = createNativeStackNavigator();

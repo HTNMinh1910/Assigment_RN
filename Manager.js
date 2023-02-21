@@ -38,7 +38,7 @@ export default function Manager(props) {
   };
   return (
       <View style={styles.container}>
-          <Pressable style={{alignItems: "center",alignSelf: "flex-end"}} onPress={nav.navigate('Form',{new:""})}>
+          <Pressable style={{alignItems: "center",alignSelf: "flex-end"}} onPress={()=>nav.navigate('Form')}>
                 <Image style={{ width: 35, height: 35, margin: 5}}
                     source={{ uri:"https://cdn-icons-png.flaticon.com/128/5956/5956828.png"}}/>
           </Pressable>
@@ -58,7 +58,7 @@ export default function Manager(props) {
               <Text style={{color: "black", fontSize: 14}}>Name: {item.name}</Text>
               <Text style={{color: "black", fontSize: 12}}>Address: {item.address}</Text>
               <Text style={{color: "black", fontSize: 12}}>Phone: {item.phone}</Text>
-              <Text style={{color: "black", fontSize: 12}}>Status: {item.status}</Text>
+              <Text style={{color: "black", fontSize: 12}}>Status: {item.status==true? "Hoạt động":"Không hoạt động"}</Text>
             </View>
           
               </View>

@@ -23,11 +23,6 @@ export default function Home(props) {
                      source={{ uri: "https://cdn-icons-png.flaticon.com/128/4466/4466498.png"}}></Image>
                      <Text style={{fontWeight: "600", fontSize: 20}}>Profile</Text>
              </Pressable>
-             <Pressable style={{alignItems: "center"}} onPress={() => nav.navigate('Form')}>
-                 <Image style={{ width: 40, height: 40, borderRadius: 5, margin: 5}}
-                     source={{ uri: "https://cdn-icons-png.flaticon.com/128/4466/4466498.png"}}></Image>
-                     <Text style={{fontWeight: "600", fontSize: 20}}>Profile</Text>
-             </Pressable>
        </View>
      </View>);
 };

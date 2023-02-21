@@ -1,6 +1,8 @@
-import {View, TextInput, Pressable, Image} from 'react-native';
+import {View, TextInput, Pressable, Image, TouchableOpacity, Platform, Text} from 'react-native';
+import Checkbox from 'expo-checkbox';
 import {useState, useEffect} from 'react';
-import {API_USER} from '../../helpers/api';
+import * as ImagePicker from 'expo-image-picker';
+import {API_USER} from '../helpers/api';
 
 export default function Form(props) {
    const {navigation: nav, route} = props;
@@ -8,8 +10,38 @@ export default function Form(props) {
    const [name, setName] = useState("");
    const [address, setAddress] = useState("");
    const [phone, setPhone] = useState("");
-   const [status, setStatus] = useState("");
-   const [img, setImg] = useState("");
+   const [status, setStatus] = useState(false);
+   const [img, setImg] = useState(null);
+
+   useEffect(() => {
+    async  () => {
+      if (Platform.OS !== "web") {
+        const {status} = await ImagePicker.requestMediaLibraryPermissionsAsync();
+        if (status !== "granted") {
+          alert("Từ chối truy cập !")
+        }
+      }
+    }
+    CheckImage();
+  }, []);
+
+   const PickerImage = async() => {
+    const result = await  ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4,3],
+      quality: 1
+    });
+    if (!result.canceled) {
+      setImg(result.assets[0].uri);
+    }
+    
+   };
+   const CheckImage = () => {
+      if (img == null) {
+        setImg("https://cdn-icons-png.flaticon.com/128/2659/2659360.png");
+      }
+   };
 
     useEffect(() => {
         if (edit) {
@@ -20,7 +52,13 @@ export default function Form(props) {
             setImg(edit.img);
         }
     }, [edit?.id]);
-
+    const onCancel=()=>{
+      setName("");
+      setAddress("");
+      setPhone("");
+      setStatus(false);
+      setImg(null);
+    };
     const onSave = () => {
         const newObj = {
                         name, 
@@ -29,22 +67,18 @@ export default function Form(props) {
                         status, 
                         img
                       };
-               fetch(
-                !edit ? 
-                API_USER 
-              : `${API_USER}/${edit.id}`
-              ,
+               fetch(!edit ? API_USER : `${API_USER}/${edit.id}`,
             {headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}, 
-            method: 
-            !edit ? 
-            'POST' 
-            : 'PUT'
-            , 
-            body: JSON.stringify(newObj)});
+            method: !edit ? 'POST' : 'PUT', 
+            body: JSON.stringify(newObj)}).then((res) => nav.goBack());
     };
 
     return (
       <View style={{alignSelf: "center", marginTop: 100}}>
+        <TouchableOpacity onPress={PickerImage}>
+        <Image style={{alignSelf: "center", width: 100, height: 100, borderRadius: 50}}
+            source={{uri:img}}/>
+      </TouchableOpacity>
       <TextInput placeholder="Name" 
         onChangeText={(text) => setName(text)} 
         value={name} style={{
@@ -76,16 +110,7 @@ export default function Form(props) {
         padding: 10, 
         marginTop: 10
       }}/>
-      <TextInput placeholder="Image" 
-        onChangeText={(text) => setImg(text)} 
-        value={img} style={{
-        borderRadius: 5, 
-        borderWidth: 1, 
-        width: 250, 
-        alignSelf: "center", 
-        padding: 10, 
-        marginTop: 10
-      }}/>
+{/*       
       <TextInput placeholder="Status" 
         onChangeText={(text) => setStatus(text)} 
         value={status} style={{
@@ -95,13 +120,22 @@ export default function Form(props) {
         alignSelf: "center", 
         padding: 10, 
         marginTop: 10
-      }}/>
+      }}/> */}
+      <View style={{flexDirection: "row", margin: 5, alignSelf: "center"}}>
+        <Text style={{marginRight: 10, fontSize: 20, fontWeight: "500"}}>Status</Text>
+      <Checkbox
+          value={status}
+          onValueChange={setStatus}
+          color={status ? '#FF509C' : undefined}
+        />
+      </View>
+      
       <View style={{marginLeft: 50, flexDirection: "row", justifyContent: "space-around", width: "80%"}}>
-            <Pressable onPress={nav.goBack()}>
+            <Pressable onPress={onCancel}>
                 <Image style={{width: 35, height: 35, margin: 5}} 
                   source={{ uri:"https://cdn-icons-png.flaticon.com/128/2140/2140664.png"}}/>
             </Pressable>
-            <Pressable onPress={()=> onSave()}>
+            <Pressable onPress={onSave}>
                 <Image style={{width: 35, height: 35, margin: 5}} 
                   source={{ uri:"https://cdn-icons-png.flaticon.com/128/3979/3979387.png"}}/>
             </Pressable>
